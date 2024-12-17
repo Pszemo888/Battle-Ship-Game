@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.BoardController" spacing="10" style="-fx-padding: 20;">
+    <Text text="Player Board" style="-fx-font-size: 18px;"/>
+    <GridPane fx:id="boardGrid" gridLinesVisible="true" hgap="2" vgap="2">
+        <!-- Komórki planszy będą generowane dynamicznie w kontrolerze -->
+    </GridPane>
+</VBox>

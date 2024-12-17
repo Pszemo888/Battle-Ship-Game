@@ -9,4 +9,6 @@ module com.example.battleshipgame {
 
     opens com.example.battleshipgame to javafx.fxml;
     exports com.example.battleshipgame;
+    exports controllers;
+    opens controllers to javafx.fxml;
 }
