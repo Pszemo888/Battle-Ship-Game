@@ -1,27 +1,35 @@
 package models;
 
-import javafx.scene.control.Button;
+public class Cell {
+    private Ship ship;
+    private boolean shot;
 
-public class Cell extends Button {
-    private Position position;
-    private boolean isHit = false;
-
-    public Cell(Position position) {
-        this.position = position;
-        this.setMinSize(40, 40);
-        this.setStyle("-fx-background-color: lightblue;");
-        this.setOnAction(e -> handleHit());
+    public Cell() {
+        this.ship = null;
+        this.shot = false;
     }
 
-    private void handleHit() {
-        if (!isHit) {
-            isHit = true;
-            this.setStyle("-fx-background-color: red;");
-            this.setText("X");
-        }
+    public boolean isEmpty() {
+        return ship == null;
     }
 
-    public Position getPosition() {
-        return position;
+    public void placeShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public boolean isShot() {
+        return shot;
+    }
+
+    public void shoot() {
+        shot = true;
+    }
+
+    public boolean hasShip() {
+        return ship != null;
+    }
+
+    public Ship getShip() {
+        return ship;
     }
 }

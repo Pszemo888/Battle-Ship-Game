@@ -4,10 +4,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.text.Text?>
-
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.BoardController" spacing="10" style="-fx-padding: 20;">
-    <Text text="Player Board" style="-fx-font-size: 18px;"/>
-    <GridPane fx:id="boardGrid" gridLinesVisible="true" hgap="2" vgap="2">
-        <!-- Komórki planszy będą generowane dynamicznie w kontrolerze -->
-    </GridPane>
+    <HBox spacing="50">
+        <!-- Plansza gracza 1 -->
+        <VBox spacing="10">
+            <Text text="Player 1 Board" style="-fx-font-size: 18px;"/>
+            <GridPane fx:id="player1Grid" gridLinesVisible="true" hgap="2" vgap="2"/>
+        </VBox>
+
+        <!-- Plansza gracza 2 -->
+        <VBox spacing="10">
+            <Text text="Player 2 Board" style="-fx-font-size: 18px;"/>
+            <GridPane fx:id="player2Grid" gridLinesVisible="true" hgap="2" vgap="2"/>
+        </VBox>
+    </HBox>
 </VBox>

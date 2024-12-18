@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.stage.Stage;
 import views.MenuView;
+import java.io.IOException;
 
 public class MenuController {
     private final Stage stage;
@@ -22,30 +23,33 @@ public class MenuController {
         menuView.getExitButton().setOnAction(e -> stage.close());
 
         stage.setScene(menuView.createScene());
+        stage.setTitle("Main Menu");
+        stage.show();
     }
 
     private void startNewGame() {
-        // Implementacja rozpoczęcia nowej gry
-        System.out.println("Rozpoczynanie nowej gry...");
+        try {
+            GameController gameController = new GameController(stage);
+            gameController.startNewGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Nie udało się rozpocząć nowej gry.");
+        }
     }
 
     private void displaySettingsMenu() {
-        // Implementacja przejścia do ustawień
         System.out.println("Wyświetlanie menu ustawień...");
     }
 
     private void displayStatistics() {
-        // Implementacja wyświetlania statystyk
         System.out.println("Wyświetlanie statystyk...");
     }
 
     private void displayAchievements() {
-        // Implementacja wyświetlania osiągnięć
         System.out.println("Wyświetlanie osiągnięć...");
     }
 
     private void displayRules() {
-        // Implementacja wyświetlania zasad
         System.out.println("Wyświetlanie zasad...");
     }
 }
