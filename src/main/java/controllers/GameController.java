@@ -3,6 +3,7 @@ package controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import models.Board;
 import models.GameModel;
 import models.Player;
 import java.io.IOException;
@@ -19,15 +20,37 @@ public class GameController {
     }
 
     public void startNewGame() throws IOException {
-        gameModel.resetGame();
+        showPlaceShipsScreen(() -> {
+            try {
+                startMainGame();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    private void showPlaceShipsScreen(Runnable onFinishCallback) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PlaceShipsView.fxml"));
+        Scene scene = new Scene(loader.load(), 1000, 600);
+
+        PlaceShipsController controller = loader.getController();
+        controller.initialize(stage, () -> {
+            Board player1Board = controller.getPlayer1Board();
+            Board player2Board = controller.getPlayer2Board();
+            onFinishCallback.run();
+        });
+
+        stage.setScene(scene);
+        stage.setTitle("Rozmieszczanie statków");
+        stage.show();
+    }
+
+    private void startMainGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/Board.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
 
         boardController = fxmlLoader.getController();
         boardController.initialize(this);
-
-        updateBoardAccess();
 
         stage.setTitle("BattleShip Game");
         stage.setScene(scene);
@@ -42,7 +65,6 @@ public class GameController {
 
         System.out.println(currentPlayer.getName() + " made a move at (" + row + ", " + col + ")");
 
-        // Zmiana tury
         gameModel.switchPlayer();
         updateBoardAccess();
     }

@@ -20,35 +20,39 @@ public class Board {
         }
     }
 
-    public boolean placeShip(int row, int col, int size, boolean horizontal) {
-        if (canPlaceShip(row, col, size, horizontal)) {
+    // Zmiana metody placeShip na użycie Position
+    public boolean placeShip(Position position, int size, boolean horizontal) {
+        if (canPlaceShip(position, size, horizontal)) {
             Ship ship = new Ship(size);
             ships.add(ship);
 
             for (int i = 0; i < size; i++) {
-                if (horizontal) {
-                    grid[row][col + i].placeShip(ship);
-                } else {
-                    grid[row + i][col].placeShip(ship);
-                }
+                int row = horizontal ? position.getRow() : position.getRow() + i;
+                int col = horizontal ? position.getCol() + i : position.getCol();
+                grid[row][col].placeShip(ship);
             }
             return true;
         }
         return false;
     }
 
-    private boolean canPlaceShip(int row, int col, int size, boolean horizontal) {
+    // Zmiana metody canPlaceShip na użycie Position
+    private boolean canPlaceShip(Position position, int size, boolean horizontal) {
         for (int i = 0; i < size; i++) {
-            int r = horizontal ? row : row + i;
-            int c = horizontal ? col + i : col;
-            if (r >= SIZE || c >= SIZE || !grid[r][c].isEmpty()) {
+            int row = horizontal ? position.getRow() : position.getRow() + i;
+            int col = horizontal ? position.getCol() + i : position.getCol();
+            if (row >= SIZE || col >= SIZE || !grid[row][col].isEmpty()) {
                 return false;
             }
         }
         return true;
     }
 
-    public String shoot(int row, int col) {
+    // Zmiana metody shoot na użycie Position
+    public String shoot(Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
+
         if (grid[row][col].isShot()) {
             return "Already shot here!";
         }
