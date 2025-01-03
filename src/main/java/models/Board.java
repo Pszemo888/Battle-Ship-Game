@@ -7,6 +7,7 @@ public class Board {
     private final int SIZE = 10;
     private final Cell[][] grid = new Cell[SIZE][SIZE];
     private final List<Ship> ships = new ArrayList<>();
+    private final List<Position> shipPositions = new ArrayList<>(); // Lista zajętych pozycji
 
     public Board() {
         initializeBoard();
@@ -20,23 +21,30 @@ public class Board {
         }
     }
 
-    // Zmiana metody placeShip na użycie Position
     public boolean placeShip(Position position, int size, boolean horizontal) {
         if (canPlaceShip(position, size, horizontal)) {
             Ship ship = new Ship(size);
-            ships.add(ship);
+            ships.add(ship); // Dodanie statku do listy
+            System.out.println("Dodano statek o rozmiarze: " + size + " na pozycję: ("
+                    + position.getRow() + ", " + position.getCol() + "), orientacja: " + (horizontal ? "pozioma" : "pionowa"));
 
             for (int i = 0; i < size; i++) {
                 int row = horizontal ? position.getRow() : position.getRow() + i;
                 int col = horizontal ? position.getCol() + i : position.getCol();
-                grid[row][col].placeShip(ship);
+
+                grid[row][col].placeShip(ship); // Przypisanie statku do pola
+                ship.addPosition(new Position(row, col)); // Dodanie pozycji do statku
+                System.out.println("Pole zajęte przez statek: (" + row + ", " + col + ")");
             }
+
             return true;
         }
+        System.out.println("Nie można umieścić statku na pozycji: ("
+                + position.getRow() + ", " + position.getCol() + ")");
         return false;
     }
 
-    // Zmiana metody canPlaceShip na użycie Position
+
     private boolean canPlaceShip(Position position, int size, boolean horizontal) {
         for (int i = 0; i < size; i++) {
             int row = horizontal ? position.getRow() : position.getRow() + i;
@@ -46,6 +54,16 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public void logShips() {
+        System.out.println("Lista statków na planszy:");
+        for (Ship ship : ships) {
+            System.out.println("Statek o rozmiarze: " + ship.getSize());
+            for (Position position : ship.getPositions()) {
+                System.out.println(" - Pozycja: (" + position.getRow() + ", " + position.getCol() + ")");
+            }
+        }
     }
 
     // Zmiana metody shoot na użycie Position
@@ -68,8 +86,23 @@ public class Board {
         }
         return "Miss!";
     }
+    public List<Position> getShipPositions() {
+        return new ArrayList<>(shipPositions);
+    }
 
     public boolean allShipsSunk() {
-        return ships.stream().allMatch(Ship::isSunk);
+        if (ships.isEmpty()) {
+            System.out.println("Lista statków jest pusta. Wszystkie statki zatopione: false");
+            return false;
+        }
+
+        for (Ship ship : ships) {
+            System.out.println("Statek o rozmiarze: " + ship.getSize() + ", Trafienia: " + ship.getHits());
+        }
+
+        boolean result = ships.stream().allMatch(Ship::isSunk);
+        System.out.println("Czy wszystkie statki zatopione? " + result);
+        return result;
     }
+
 }

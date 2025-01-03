@@ -60,6 +60,12 @@ public class BoardController {
         });
     }
 
+    public void setBoards(Board player1Board, Board player2Board) {
+        this.player1Board = player1Board;
+        this.player2Board = player2Board;
+        System.out.println("Plansze przekazane do widoku rozgrywki.");
+    }
+
     public GridPane getPlayer1Grid() {
         return player1Grid;
     }

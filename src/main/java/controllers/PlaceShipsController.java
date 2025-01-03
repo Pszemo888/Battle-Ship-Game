@@ -9,6 +9,7 @@ import models.Position;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import models.GameModel;
 
 public class PlaceShipsController {
 
@@ -18,8 +19,7 @@ public class PlaceShipsController {
     @FXML
     private Text playerNameText;
 
-    @FXML
-    private Button finishButton;
+
 
     private Board player1Board = new Board();
     private Board player2Board = new Board();
@@ -53,11 +53,15 @@ public class PlaceShipsController {
     private void handleCellClick(Position position, Button cellButton) {
         Board board = currentPlayer == 1 ? player1Board : player2Board;
 
-        if (board.placeShip(position, 1, true))  {
+        if (board.placeShip(position, 1, true)) {
             cellButton.setStyle("-fx-background-color: navy;");
             cellButton.setText("S");
+
+            // Logowanie informacji o umieszczeniu statku
+            System.out.println("Gracz " + currentPlayer + " umieścił statek na pozycji: "
+                    + position.getRow() + ", " + position.getCol());
         } else {
-            Alert alert = new Alert(AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Błąd");
             alert.setHeaderText(null);
             alert.setContentText("Nie można umieścić statku na tym polu.");
@@ -68,16 +72,22 @@ public class PlaceShipsController {
     @FXML
     private void handleFinishPlacement() {
         if (currentPlayer == 1) {
+            System.out.println("Statki gracza 1 po rozmieszczeniu:");
+            player1Board.logShips(); // Logowanie statków gracza 1
             currentPlayer = 2;
             playerNameText.setText("Gracz 2 - Rozmieszczanie statków");
-            createBoard(); // Reset planszy dla drugiego gracza
+            createBoard(); // Reset planszy dla gracza 2
         } else {
-            // Obaj gracze zakończyli umieszczanie statków
+            System.out.println("Statki gracza 2 po rozmieszczeniu:");
+            player2Board.logShips(); // Logowanie statków gracza 2
+
             if (onFinishCallback != null) {
+                GameModel.getInstance().setBoards(player1Board, player2Board);
                 onFinishCallback.run();
             }
         }
     }
+
 
     public Board getPlayer1Board() {
         return player1Board;

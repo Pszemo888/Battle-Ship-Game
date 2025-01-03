@@ -14,22 +14,23 @@ public class Cell {
     }
 
     public void placeShip(Ship ship) {
-        this.ship = ship;
-    }
-
-    public boolean isShot() {
-        return shot;
-    }
-
-    public void shoot() {
-        shot = true;
+        this.ship = ship; // Przypisanie statku do komórki
     }
 
     public boolean hasShip() {
-        return ship != null;
+        return ship != null; // Sprawdzenie, czy pole zawiera statek
+    }
+
+    public void shoot() {
+        this.shot = true;
+    }
+
+    public boolean isShot() {
+        return this.shot;
     }
 
     public Ship getShip() {
-        return ship;
+        return this.ship;
     }
 }
+
